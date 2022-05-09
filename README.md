@@ -1,15 +1,2 @@
-# Week - NULL
-```Hafta veya Ödev Sayısı (NULL değiştir)```
+ Beş katmandan oluşan bir iş yönetim sistemi uygulamasıdır.(DATA,ENTITIES,MVC,SERVICES,SHARED)
 
-# Homework 
-```Ödev```
-
-
-## Homework Description
-
-```Ödev Açıklaması ```
-
-
-## Author
-
-```Ödevi yapan```

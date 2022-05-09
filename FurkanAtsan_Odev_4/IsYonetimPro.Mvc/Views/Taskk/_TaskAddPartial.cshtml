@@ -1,0 +1,66 @@
+﻿@model IsYonetimPro.Entities.Dtos.TaskAddDto
+
+@* Getboostreap Modal  *@
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">İş Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="İptal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Add" id="form-task-add">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="All" class="text-danger"  aria-hidden="true" style= "display: none;" ></div>
+                    <div class="form-group">
+                        <label asp-for="TaskTitle"></label>
+                        <input class="form-control" asp-for="TaskTitle" />
+                        <span class="text-danger" asp-validation-for="TaskTitle"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskDescription"></label>
+                        <input class="form-control" asp-for="TaskDescription" />
+                        <span class="text-danger" asp-validation-for="TaskDescription"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskStartDate"></label>
+                        <input class="form-control" type="datetime" asp-for="TaskStartDate" placeholder="yyyy-mm-dd" />
+                        <span class="text-danger" asp-validation-for="TaskStartDate" ></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskEndDate"></label>
+                        <input class="form-control"type="datetime" asp-for="TaskEndDate" placeholder="yyyy-mm-dd" />
+                        <span class="text-danger" asp-validation-for="TaskEndDate"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskDepartmentId"></label>
+                        <input class="form-control" asp-for="TaskDepartmentId" placeholder="Yazılım=1 |Muhasebe=2 |Organizasyon=3 |Finans=4 |İK=5" />
+                        <span class="text-danger" asp-validation-for="TaskDepartmentId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectId"></label>
+                        <input class="form-control" asp-for="ProjectId" placeholder="A Projesi=1 | B Projesi=2 | C=3 | D=4 |E=5"/>
+                        <span class="text-danger" asp-validation-for="ProjectId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskImportanceId"></label>
+                        <input class="form-control" asp-for="TaskImportanceId" placeholder="Kritik=1 | Acil=2 | Normal=3"/>
+                        <span class="text-danger" asp-validation-for="TaskImportanceId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="TaskStatusId"></label>
+                        <input class="form-control" asp-for="TaskStatusId" placeholder="Yapılacak=1 | Yapılıyor=2 | Yapıldı=3 |Yapılmadı=4" />
+                        <span class="text-danger" asp-validation-for="TaskStatusId"></span>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" id="btnSave">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>

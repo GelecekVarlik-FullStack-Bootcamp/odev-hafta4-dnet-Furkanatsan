@@ -1,0 +1,192 @@
+﻿@using IsYonetimPro.Shared.Utilities.Results.ComplexTypes
+@model IsYonetimPro.Entities.Dtos.TaskListDto
+@{
+    Layout = "_Layout";
+}
+@if (Model.ResultStatus == ResultStatus.Success)
+{
+    <div id="modalHere" aria-hidden="true"></div>//Ekle modalının açılacagı yer
+    <div class="card mb-4 mt-2">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            İş Listesi
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="tasksTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>İş Başlığı</th>
+                            <th>İş Açıklaması</th>
+                            <td>İş Yaratılma Tarihi</td>
+                            <th>İş Başlangıç Tarihi</th>
+                            <th>İş Bitiş Tarihi</th>
+                            <th>İş Talep Eden Kişi</th>
+                            <th>İş Departman Adı</th>
+                            <th>İş Önemi</th>
+                            <th>İş Durumu</th>
+                            <th>İş Mesajı</th>
+                            <th>İşin Projesi</th>
+                            <th>İşin Ait Olduğu Çalışan</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>İş Başlığı</th>
+                            <th>İş Açıklaması</th>
+                            <td>İş Yaratılma Tarihi</td>
+                            <th>İş Başlangıç Tarihi</th>
+                            <th>İş Bitiş Tarihi</th>
+                            <th>İş Talep Eden Kişi</th>
+                            <th>İş Departman Adı</th>
+                            <th>İş Önemi</th>
+                            <th>İş Durumu</th>
+                            <th>İş Mesajı</th>
+                            <th>İşin Projesi</th>
+                            <th>İşin Ait Olduğu Çalışan</th>
+                            <th>Sil</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var task in Model.Task)
+                        {
+                            <tr>
+                                <td>@task.TaskId</td>
+                                <td>@task.TaskTitle</td>
+                                <td>@task.TaskDescription</td>
+                                <td>@task.CreatedDate</td>
+                                <td>@task.TaskStartDate</td>
+                                <td>@task.TaskEndDate</td>
+                                <td>@task.CreatedBy</td>
+                                <td>@task.TaskDepartmentId</td>
+                                <td>@task.TaskImportanceId</td>
+                                <td>@task.TaskStatusId</td>
+                                <td>@task.TaskMessageId</td>
+                                <td>@task.ProjectId</td>
+                                <td>@task.EmployeeId</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm btnTask" data-id="@task.TaskId"><span class="fas fa-plus-circle"></span>İşi Al</button>
+                                    <button class="btn btn-danger btn-sm btnDelete" data-id="@task.TaskId"><span class="fas fa-minus-circle"></span> Sil</button>
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+}
+@if (Model.ResultStatus==ResultStatus.Error)
+{
+    <div class="alert alert-danger">
+        <p>Bir hata oluştu.</p>
+        <a class="alert-link" asp-controller="Home" asp-action="Index" >Geri Dön</a>
+    </div>
+}
+@section Scripts
+{
+@* DataTable *@
+<script>
+        $(document).ready(function () {
+            $('#tasksTable').DataTable({
+                dom:
+                    "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>", /*ekle yenileyi ortaya almak için,filtreyi kapatmasın diye */
+                buttons: [
+                    {
+                        text: 'Ekle',
+                        attr: {
+                            id:"btnAdd",
+                        },
+                        className:'btn btn-success',
+                        action: function (e, dt, node, config) {
+
+                        }
+                    }
+                ]
+            });
+             //datatable finito
+            //ajax get- Add
+            $(function () {
+                const url = '@Url.Action("Add","Taskk")';//
+                const modalHereDiv = $('#modalHere');//modelhere divini modalherediv içine attık
+                $('#btnAdd').click(function () {//datatabledeki ekle butonuna basılırda jquery get işlemi başlat
+                    $.get(url).done(function (data) {//get urle gidip add actionundan taskAddpartialviewi aldı ve data olarak getirdi.
+                        modalHereDiv.html(data);//taskAddPartial vieWini aldık ve modelHere divinin içine yazmış olduk.
+                        modalHereDiv.find(".modal").modal('show');// classı modaal olan dici modal yap ve modal olarak göster.
+                    });
+                });
+
+                 //Ajax post-Add
+                modalHereDiv.on('click', '#btnSave', function (event)//modelhere divine event ekledik btnSave id li butona tıklandığında aşağıdaki işlemler gerçekleşicek.
+                {
+                    event.preventDefault();//butonun default click işlemibi engelledik.
+                    const form = $('#form-task-add');
+                    const actionUrl = form.attr('action');//Add Actionu
+                    const dataToSend = form.serialize();//gönderilecek form içindeki veriyi serialize ettik(form içindeki veriyi taskAddDto ya dönüştürdük.)
+                    $.post(actionUrl, dataToSend).done(function (data) {//formdan aldığımız taskAddDto yu Add Actionuna gönderdik.
+                        const taskAddAjaxModel = jQuery.parseJSON(data);
+                        const newFormBody = $('.modal-body', taskAddAjaxModel.TaskAddPartial);
+                        modalHereDiv.find('.modal-body').replaceWith(newFormBody);
+                        const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';//name i  IsValid olan div in valuesini aldık.true ya eşit ise isValid true olucak değilse Fale olucak
+                        if (isValid) {
+                            modalHereDiv.find('.modal').modal('hide');//modalı bul modal haline getir ve gizle
+                            const newTableRow = `
+                             <tr>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskTitle}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskDescription}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.CreatedDate}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskStartDate}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskEndDate}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.CreatedBy}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskDepartmentId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskImportanceId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskStatusId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.TaskMessageId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.ProjectId}</td>
+                                <td>${taskAddAjaxModel.TaskDto.Taskk.EmployeeId}</td>
+                                </tr>`;//string format ile tablomuzu ekledik.
+                            const newTableRowObject = $(newTableRow);
+                            $('#tasksTable').append(newTableRowObject);
+                        }
+                        else {
+                            alert('Bir hata oluştu.');
+                        }
+                    });
+                });
+            });
+
+            @*//ajax post-Delete
+            $(document).on('click', 'btnDelete', function (event) {
+                event.preventDefault();
+                const id = $(this).attr('data-id');//this sayesinde tıklanan butonun id değerini alırız.
+                $.ajax({
+                    type: 'DELETE',
+                    dataType: 'json',
+                    data: { taskId= id },
+                    url: '@Url.Action("Delete","Taskk")',
+                    success: function (data) {
+                        const result = jQuery.parseJSON(data);
+                        const tableRow = $(`[name="${id}"]`);
+                        tableRow.fadeOut(500);
+                        
+                    }
+                   
+                });
+                
+            });*@
+
+
+        });
+
+
+</script>
+}

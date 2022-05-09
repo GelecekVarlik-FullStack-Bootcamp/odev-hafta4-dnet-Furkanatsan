@@ -1,0 +1,352 @@
+USE [master]
+GO
+/****** Object:  Database [IsYonetimSistemiDB]    Script Date: 9.05.2022 21:51:19 ******/
+CREATE DATABASE [IsYonetimSistemiDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'IsYonetimSistemiDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\IsYonetimSistemiDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'IsYonetimSistemiDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\IsYonetimSistemiDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [IsYonetimSistemiDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET QUERY_STORE = OFF
+GO
+USE [IsYonetimSistemiDB]
+GO
+/****** Object:  Table [dbo].[Department]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Department](
+	[DepartmentId] [int] IDENTITY(1,1) NOT NULL,
+	[DepartmentName] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Department] PRIMARY KEY CLUSTERED 
+(
+	[DepartmentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employee](
+	[EmployeeId] [int] IDENTITY(1,1) NOT NULL,
+	[EmployeeName] [nvarchar](50) NOT NULL,
+	[EmployeeSurname] [nvarchar](50) NOT NULL,
+	[EmployeeEmail] [nvarchar](100) NOT NULL,
+	[EmployeePhone] [decimal](11, 0) NULL,
+	[EmployeePassword] [nvarchar](200) NOT NULL,
+	[EmployeeDepartmentId] [int] NOT NULL,
+	[EmployeeRoleId] [int] NOT NULL,
+	[EmployeeMessageId] [int] NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedDate] [datetime] NULL,
+	[IsDeleted] [bit] NULL,
+	[IsActive] [bit] NULL,
+	[CreatedById] [int] NULL,
+ CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Project]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Project](
+	[ProjectId] [int] IDENTITY(1,1) NOT NULL,
+	[ProjectName] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED 
+(
+	[ProjectId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[RoleId] [int] IDENTITY(1,1) NOT NULL,
+	[RoleName] [nvarchar](20) NOT NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Task]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Task](
+	[TaskId] [int] IDENTITY(1,1) NOT NULL,
+	[TaskTitle] [nvarchar](50) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[CreatedBy] [int] NULL,
+	[TaskDescription] [nvarchar](max) NOT NULL,
+	[TaskStartDate] [datetime] NULL,
+	[TaskEndDate] [datetime] NULL,
+	[TaskDepartmentId] [int] NOT NULL,
+	[TaskImportanceId] [int] NOT NULL,
+	[TaskStatusId] [int] NOT NULL,
+	[TaskMessageId] [int] NULL,
+	[ProjectId] [int] NOT NULL,
+	[EmployeeId] [int] NOT NULL,
+	[ModifiedDate] [datetime] NULL,
+	[IsDeleted] [bit] NULL,
+	[IsActive] [bit] NULL,
+	[CreatedById] [int] NULL,
+ CONSTRAINT [PK_Task] PRIMARY KEY CLUSTERED 
+(
+	[TaskId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TaskImportance]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TaskImportance](
+	[ImportanceId] [int] IDENTITY(1,1) NOT NULL,
+	[ImportanceStatus] [nvarchar](20) NOT NULL,
+ CONSTRAINT [PK_TaskImportance] PRIMARY KEY CLUSTERED 
+(
+	[ImportanceId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TaskMessage]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TaskMessage](
+	[MessageId] [int] IDENTITY(1,1) NOT NULL,
+	[MessageDescription] [nvarchar](1000) NULL,
+	[MessgeDate] [datetime] NOT NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedDate] [datetime] NULL,
+	[IsDeleted] [bit] NULL,
+	[IsActive] [bit] NULL,
+	[CreatedById] [int] NULL,
+ CONSTRAINT [PK_TaskMessage] PRIMARY KEY CLUSTERED 
+(
+	[MessageId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[TaskStatus]    Script Date: 9.05.2022 21:51:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[TaskStatus](
+	[StatusId] [int] IDENTITY(1,1) NOT NULL,
+	[StatusName] [nvarchar](20) NOT NULL,
+ CONSTRAINT [PK_TaskStatus] PRIMARY KEY CLUSTERED 
+(
+	[StatusId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Department] ON 
+GO
+INSERT [dbo].[Department] ([DepartmentId], [DepartmentName]) VALUES (1, N'Yazılım')
+GO
+INSERT [dbo].[Department] ([DepartmentId], [DepartmentName]) VALUES (2, N'Muhasebe')
+GO
+INSERT [dbo].[Department] ([DepartmentId], [DepartmentName]) VALUES (3, N'Organizasyon')
+GO
+INSERT [dbo].[Department] ([DepartmentId], [DepartmentName]) VALUES (4, N'Finans')
+GO
+INSERT [dbo].[Department] ([DepartmentId], [DepartmentName]) VALUES (5, N'İnsan Kaynakları')
+GO
+SET IDENTITY_INSERT [dbo].[Department] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Employee] ON 
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (1, N'Furkan', N'Atsan', N'furkandurmusatsan@gmail.com', CAST(5512058945 AS Decimal(11, 0)), N'123456', 1, 1, 1, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (2, N'Anıl', N'Üye', N'aniluye@gmail.com', CAST(5055055555 AS Decimal(11, 0)), N'123456', 2, 2, 2, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (4, N'Alper', N'Akdemir', N'alperakdemir@gmail.com', CAST(5075075757 AS Decimal(11, 0)), N'123456', 3, 3, 3, NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (5, N'wed', N'wedwed', N'qwdqwdwq@gmail.com', NULL, N'ghghgh', 3, 3, NULL, CAST(N'2022-05-08T20:42:48.757' AS DateTime), CAST(N'2022-05-08T20:42:48.753' AS DateTime), NULL, NULL, 1)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (6, N'wed', N'wedwed', N'qwdqwdwq@gmail.com', NULL, N'123456', 3, 3, NULL, CAST(N'2022-05-08T20:50:50.203' AS DateTime), CAST(N'2022-05-08T20:50:50.203' AS DateTime), NULL, NULL, 1)
+GO
+INSERT [dbo].[Employee] ([EmployeeId], [EmployeeName], [EmployeeSurname], [EmployeeEmail], [EmployeePhone], [EmployeePassword], [EmployeeDepartmentId], [EmployeeRoleId], [EmployeeMessageId], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (7, N'qwdqwdq', N'qwdqwd', N'qwdqwdwq@gmail.com', CAST(12345678998 AS Decimal(11, 0)), N'123456', 3, 3, NULL, CAST(N'2022-05-08T20:54:01.213' AS DateTime), CAST(N'2022-05-08T20:54:01.213' AS DateTime), NULL, NULL, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Employee] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Project] ON 
+GO
+INSERT [dbo].[Project] ([ProjectId], [ProjectName]) VALUES (1, N'A Projesi')
+GO
+INSERT [dbo].[Project] ([ProjectId], [ProjectName]) VALUES (2, N'B Projesi')
+GO
+INSERT [dbo].[Project] ([ProjectId], [ProjectName]) VALUES (3, N'C Projesi')
+GO
+INSERT [dbo].[Project] ([ProjectId], [ProjectName]) VALUES (4, N'D Projesi')
+GO
+INSERT [dbo].[Project] ([ProjectId], [ProjectName]) VALUES (5, N'İnsan Kaynakları Projesi')
+GO
+SET IDENTITY_INSERT [dbo].[Project] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Role] ON 
+GO
+INSERT [dbo].[Role] ([RoleId], [RoleName]) VALUES (1, N'Admin')
+GO
+INSERT [dbo].[Role] ([RoleId], [RoleName]) VALUES (2, N'Yönetici')
+GO
+INSERT [dbo].[Role] ([RoleId], [RoleName]) VALUES (3, N'Personel')
+GO
+SET IDENTITY_INSERT [dbo].[Role] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Task] ON 
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (1, N'İs Yonetim Sistemi', CAST(N'2022-04-30T13:25:41.303' AS DateTime), 2, N'İş yönetim sistemi yapılacak', NULL, NULL, 1, 3, 1, 1, 1, 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (2, N'Muhasebe kar', CAST(N'2022-04-30T13:30:02.190' AS DateTime), 1, N'Muhasebe gelir gider farkı hesaplanıcak', NULL, NULL, 2, 1, 1, 2, 2, 2, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (5, N'Organizasyon Plan', CAST(N'2022-04-30T13:35:51.127' AS DateTime), 2, N'2 aylık plan dökümü', NULL, NULL, 3, 2, 1, 3, 3, 4, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (13, N'test', CAST(N'2022-05-07T19:37:36.320' AS DateTime), 1, N'test1', NULL, NULL, 3, 1, 1, NULL, 3, 0, CAST(N'2022-05-07T19:37:36.320' AS DateTime), NULL, NULL, 1)
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (19, N'test', CAST(N'2022-05-08T15:07:27.213' AS DateTime), 1, N'asdasd', NULL, NULL, 1, 1, 1, NULL, 1, 0, CAST(N'2022-05-08T15:07:27.213' AS DateTime), NULL, NULL, 1)
+GO
+INSERT [dbo].[Task] ([TaskId], [TaskTitle], [CreatedDate], [CreatedBy], [TaskDescription], [TaskStartDate], [TaskEndDate], [TaskDepartmentId], [TaskImportanceId], [TaskStatusId], [TaskMessageId], [ProjectId], [EmployeeId], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (20, N'test', CAST(N'2022-05-09T21:43:49.847' AS DateTime), 1, N'asdasd', NULL, NULL, 1, 1, 1, NULL, 1, 0, CAST(N'2022-05-09T21:43:49.847' AS DateTime), NULL, NULL, 1)
+GO
+SET IDENTITY_INSERT [dbo].[Task] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TaskImportance] ON 
+GO
+INSERT [dbo].[TaskImportance] ([ImportanceId], [ImportanceStatus]) VALUES (1, N'Kritik')
+GO
+INSERT [dbo].[TaskImportance] ([ImportanceId], [ImportanceStatus]) VALUES (2, N'Acil')
+GO
+INSERT [dbo].[TaskImportance] ([ImportanceId], [ImportanceStatus]) VALUES (3, N'Normal')
+GO
+SET IDENTITY_INSERT [dbo].[TaskImportance] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TaskMessage] ON 
+GO
+INSERT [dbo].[TaskMessage] ([MessageId], [MessageDescription], [MessgeDate], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (1, N'İş yönetim sistemi yapılıyor', CAST(N'2022-04-30T13:12:51.070' AS DateTime), NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[TaskMessage] ([MessageId], [MessageDescription], [MessgeDate], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (2, N'ikinci mesaj', CAST(N'2022-04-30T00:00:00.000' AS DateTime), NULL, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[TaskMessage] ([MessageId], [MessageDescription], [MessgeDate], [CreatedDate], [ModifiedDate], [IsDeleted], [IsActive], [CreatedById]) VALUES (3, N'üçüncü mesaj', CAST(N'2022-04-30T13:22:22.053' AS DateTime), NULL, NULL, NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[TaskMessage] OFF
+GO
+SET IDENTITY_INSERT [dbo].[TaskStatus] ON 
+GO
+INSERT [dbo].[TaskStatus] ([StatusId], [StatusName]) VALUES (1, N'Yapılacak')
+GO
+INSERT [dbo].[TaskStatus] ([StatusId], [StatusName]) VALUES (2, N'Yapılıyor')
+GO
+INSERT [dbo].[TaskStatus] ([StatusId], [StatusName]) VALUES (3, N'Yapıldı')
+GO
+INSERT [dbo].[TaskStatus] ([StatusId], [StatusName]) VALUES (4, N'Yapılmadı')
+GO
+SET IDENTITY_INSERT [dbo].[TaskStatus] OFF
+GO
+ALTER TABLE [dbo].[Task] ADD  CONSTRAINT [DF_Task_CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
+GO
+ALTER TABLE [dbo].[TaskMessage] ADD  CONSTRAINT [DF_TaskMessage_MessgeDate]  DEFAULT (getdate()) FOR [MessgeDate]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Department] FOREIGN KEY([EmployeeDepartmentId])
+REFERENCES [dbo].[Department] ([DepartmentId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Department]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Role] FOREIGN KEY([EmployeeRoleId])
+REFERENCES [dbo].[Role] ([RoleId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Role]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_TaskMessage] FOREIGN KEY([EmployeeMessageId])
+REFERENCES [dbo].[TaskMessage] ([MessageId])
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_TaskMessage]
+GO
+USE [master]
+GO
+ALTER DATABASE [IsYonetimSistemiDB] SET  READ_WRITE 
+GO

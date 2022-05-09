@@ -1,0 +1,152 @@
+﻿@using IsYonetimPro.Shared.Utilities.Results.ComplexTypes
+@model IsYonetimPro.Entities.Dtos.EmployeeListDto
+@{
+    Layout = "_Layout";
+}
+@if (Model.ResultStatus == ResultStatus.Success)
+{
+    <div id="modalHeree" aria-hidden="true"></div>//Ekle modalının açılacagı yer
+    <div class="card mb-4 mt-2">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Çalışan Listesi
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="employeesTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>İsim</th>
+                            <th>Soy İsim</th>
+                            <th>Email</th>
+                            <th>Şifre</th>
+                            <th>Telefon</th>
+                            <th>Departman ID</th>
+                            <th>Rol ID</th>
+                            <th>Sil</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>İsim</th>
+                            <th>Soy İsim</th>
+                            <th>Email</th>
+                            <th>Şifre</th>
+                            <th>Telefon</th>
+                            <th>Departman ID</th>
+                            <th>Rol ID</th>
+                            <th>Sil</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var employee in Model.Employees)
+                        {
+                            <tr>
+                                <td>@employee.EmployeeId</td>
+                                <td>@employee.EmployeeName</td>
+                                <td>@employee.EmployeeSurname</td>
+                                <td>@employee.EmployeeEmail</td>
+                                <td>@employee.EmployeePassword</td>
+                                <td>@employee.EmployeePhone</td>
+                                <td>@employee.EmployeeDepartmentId</td>
+                                <td>@employee.EmployeeRoleId</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm btnDelete" data-id="@employee.EmployeeId"><span class="fas fa-minus-circle"></span> Sil</button>
+                                </td>
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+}
+@if (Model.ResultStatus == ResultStatus.Error)
+{
+    <div class="alert alert-danger">
+        <p>Bir hata oluştu.</p>
+        <a class="alert-link" asp-controller="Home" asp-action="Index">Geri Dön</a>
+    </div>
+}
+@section Scripts
+{
+    @* DataTable *@
+    <script>
+        $(document).ready(function () {
+            $('#employeesTable').DataTable({
+                dom:
+                    "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>", /*ekle yenileyi ortaya almak için,filtreyi kapatmasın diye */
+                buttons: [
+                    {
+                        text: 'Ekle',
+                        attr: {
+                            id: "btnAdd",
+                        },
+                        className: 'btn btn-success',
+                        action: function (e, dt, node, config) {
+
+                        }
+                    }
+                ]
+            });
+            //datatable biter
+
+            $(function () {
+                const url = '@Url.Action("Add","Employee")';//
+                const modalHereDiv = $('#modalHeree');//modelhere divini modalherediv içine attık
+                $('#btnAdd').click(function () {//datatabledeki ekle butonuna basılırda jquery get işlemi başlat
+                    $.get(url).done(function (data) {//get urle gidip add actionundan employeeAddpartialviewi aldı ve data olarak getirdi.
+                        modalHereDiv.html(data);//employeeAddPartial vieWini aldık ve modelHere divinin içine yazmış olduk.
+                        modalHereDiv.find(".modal").modal('show');// classı modaal olan divi modal yap ve modal olarak göster.
+                    });
+                });
+
+                 //Ajax post-Add
+                modalHereDiv.on('click','#btn', function (event)//modelhere divine event ekledik btnSave id li butona tıklandığında aşağıdaki işlemler gerçekleşicek.
+                {
+                    console.log('ab');
+                    event.preventDefault();//butonun default click işlemini engelledik.
+                    const form = $('#form-employee-add');
+                    const actionUrl = form.attr('action');//Add Actionu
+                    const dataToSend = form.serialize();//gönderilecek form içindeki veriyi serialize ettik(form içindeki veriyi employeeAddDto ya dönüştürdük.)
+                    
+                    $.post(actionUrl, dataToSend).done(function (data) {
+                        console.log('A');
+                        const employeeAddAjaxModel = jQuery.parseJSON(data);
+                        const newFormBody = $('.modal-body', employeeAddAjaxModel.EmployeeAddPartial);
+                        modalHereDiv.find('.modal-body').replaceWith(newFormBody);
+                        const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
+                        console.log('Abcd');
+                        if (isValid) {
+                            console.log('Abc');
+                            modalHereDiv.find('.modal').modal('hide');//modalı bul modal haline getir ve gizle
+                            const newTableRow = `
+                             <tr>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeId}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeName}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeSurname}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeEmail}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeePassword}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeePhone}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeDepartmentId}</td>
+                                <td>${employeeAddAjaxModel.EmployeeDto.Employee.EmployeeRoleId}</td>
+                            </tr>`;
+                            const newTableRowObject = $(newTableRow);
+                            newTableRowObject.hide();
+                            $('#employeesTable').append(newTableRowObject);
+                            newTableRowObject.fadeIn(3500);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}
+

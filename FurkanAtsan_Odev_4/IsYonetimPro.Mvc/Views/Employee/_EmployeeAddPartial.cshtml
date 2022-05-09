@@ -1,0 +1,59 @@
+﻿@model IsYonetimPro.Entities.Dtos.EmployeeAddDto
+@* Getboostreap Modal  *@
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Personel Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="İptal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form  asp-action="Add" id="form-employee-add">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="All" class="text-danger" aria-hidden="true" style="display: none;"></div>
+                    <div class="form-group">
+                        <label asp-for="EmployeeName"></label>
+                        <input class="form-control" asp-for="EmployeeName" />
+                        <span class="text-danger" asp-validation-for="EmployeeName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeeSurname"></label>
+                        <input class="form-control"  asp-for="EmployeeSurname" />
+                        <span class="text-danger" asp-validation-for="EmployeeSurname"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeeEmail"></label>
+                        <input class="form-control" type="email" asp-for="EmployeeEmail" />
+                        <span class="text-danger" asp-validation-for="EmployeeEmail"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeePassword"></label>
+                        <input class="form-control" type="password" asp-for="EmployeePassword" />
+                        <span class="text-danger" asp-validation-for="EmployeePassword"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeePhone"></label>
+                        <input class="form-control"  asp-for="EmployeePhone" placeholder="(000)-000-00-00" />
+                        <span class="text-danger" asp-validation-for="EmployeePhone"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeeDepartmentId"></label>
+                        <input class="form-control" asp-for="EmployeeDepartmentId" placeholder="Yazılım=1 | Muhasebe=2 | Organizasyon=3 | Finans=4 |İK=5 " />
+                        <span class="text-danger" asp-validation-for="EmployeeDepartmentId  "></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmployeeRoleId"></label>
+                        <input class="form-control" asp-for="EmployeeRoleId" placeholder="Admin=1 | Yönetici=2 | Personel=3" />
+                        <span class="text-danger" asp-validation-for="EmployeeRoleId"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-primary" id="btn">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
